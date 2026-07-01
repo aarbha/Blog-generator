@@ -1,0 +1,14 @@
+{
+  "feeds": [
+    "https://techcrunch.com/feed/",
+    "https://feeds.arstechnica.com/arstechnica/index",
+    "https://www.theverge.com/rss/index.xml",
+    "https://www.wired.com/feed/rss",
+    "https://news.ycombinator.com/rss",
+    "https://www.technologyreview.com/feed/",
+    "https://www.zdnet.com/news/rss.xml",
+    "https://www.engadget.com/rss.xml",
+    "https://feeds.feedburner.com/oreilly/radar/atom",
+    "https://github.blog/feed/"
+  ]
+}
