@@ -338,7 +338,6 @@ async def process_input(
     depth: str = "auto",
     max_sources: int = 5,
     output_dir: str | None = None,
-    publish_to_medium: bool = False,
     local_only: bool = False,
 ):
     settings.agent_force_local = local_only
@@ -359,7 +358,6 @@ async def process_input(
             depth=depth,
             max_sources=max_sources,
             output_path=output_path,
-            publish_to_medium=publish_to_medium,
             verbose=True,
         )
     except Exception as e:
@@ -413,21 +411,17 @@ async def interactive_loop():
     print("     RSS URL → Parse a feed and write a digest")
     print("     'feeds' → Check subscribed feeds for new articles")
     print()
-    print("   Commands:")
-    print("     medium:on / medium:off → toggle Medium draft publishing")
     print()
 
     max_sources = 5
     output_dir = None
-    publish_to_medium = False
     depth = "auto"
     local_only = False
 
     while True:
         cloud_status = "LOCAL ONLY" if local_only else "HYBRID (Groq+local)"
-        medium_status = "ON" if publish_to_medium else "OFF"
         print("Enter a topic, URL, RSS feed, idea, or 'q' to quit:")
-        print(f"  [{cloud_status}] [Depth: {depth} | Medium: {medium_status}]  Commands: 'local-only', 'hybrid', 'depth:...', 'sources:N', 'dir:PATH', 'medium:on/off', 'help'")
+        print(f"  [{cloud_status}] [Depth: {depth}]  Commands: 'local-only', 'hybrid', 'depth:...', 'sources:N', 'dir:PATH', 'help'")
         try:
             cmd = input("  > ").strip()
         except (EOFError, KeyboardInterrupt):
@@ -449,7 +443,6 @@ async def interactive_loop():
             print("    depth:short              → quick 3-4 section post")
             print("    sources:10              → use up to 10 sources")
             print("    dir:./output            → save blog posts to ./output")
-            print("    medium:on               → send draft to Medium after generation")
             continue
 
         if cmd.lower() == "local-only":
@@ -486,21 +479,11 @@ async def interactive_loop():
             print(f"  [OK] Output directory set to '{output_dir}'")
             continue
 
-        if cmd.lower() == "medium:on":
-            publish_to_medium = True
-            print("  [OK] Medium draft publishing enabled")
-            continue
-
-        if cmd.lower() == "medium:off":
-            publish_to_medium = False
-            print("  [OK] Medium draft publishing disabled")
-            continue
-
         if not cmd:
             continue
 
         try:
-            await process_input(cmd, "auto", depth, max_sources, output_dir, publish_to_medium, local_only)
+            await process_input(cmd, "auto", depth, max_sources, output_dir, local_only)
         except Exception as e:
             print(f"\n  [ERROR] Unexpected error: {e}")
             print("  The interactive session continues. Please try again.\n")
@@ -535,11 +518,10 @@ def cli():
 )
 @click.option("--sources", default=5, help="Maximum source articles")
 @click.option("--dir", "output_dir", default=None, help="Output directory for markdown file")
-@click.option("--medium", is_flag=True, help="Publish draft to Medium")
 @click.option("--local-only", is_flag=True, default=False, help="Use local models only (no Groq)")
-def generate(input_data, mode, depth, sources, output_dir, medium, local_only):
+def generate(input_data, mode, depth, sources, output_dir, local_only):
     """Generate a blog post from a topic, URL, RSS feed, or idea."""
-    asyncio.run(process_input(input_data, mode, depth, sources, output_dir, medium, local_only))
+    asyncio.run(process_input(input_data, mode, depth, sources, output_dir, local_only))
 
 
 @cli.command()

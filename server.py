@@ -56,11 +56,6 @@ async def list_tools():
                         "description": "Maximum self-critique refinement passes",
                         "default": 3,
                     },
-                    "publish_to_medium": {
-                        "type": "boolean",
-                        "description": "Send the result as a draft to Medium",
-                        "default": False,
-                    },
                 },
                 "required": ["input"],
             },
@@ -92,9 +87,8 @@ async def call_tool(name: str, arguments: dict):
         input_type = arguments.get("input_type", "auto")
         max_sources = arguments.get("max_sources", 5)
         max_refine = arguments.get("max_refine_iterations", 3)
-        publish_to_medium = arguments.get("publish_to_medium", False)
 
-        logger.info(f"Generating blog: type={input_type}, sources={max_sources}, medium={publish_to_medium}")
+        logger.info(f"Generating blog: type={input_type}, sources={max_sources}")
 
         try:
             result = await generate_blog(
@@ -102,7 +96,6 @@ async def call_tool(name: str, arguments: dict):
                 input_type=input_type,
                 max_sources=max_sources,
                 max_refine_iterations=max_refine,
-                publish_to_medium=publish_to_medium,
                 verbose=False,
             )
             logger.info("Blog post generated successfully")

@@ -10,7 +10,7 @@ Agentic blog writer using a hybrid Groq + Ollama pipeline. Routes knowledge-inte
 - RSS feed discovery + DuckDuckGo + 4 alternative news sources
 - Long-form chapter support for comprehensive articles
 - Self-critique and polish with structured scoring
-- Medium publishing integration
+- HTML preview with "Copy to Medium" button (pastes cleanly into Medium's editor)
 
 ## Quick Start
 
@@ -52,7 +52,6 @@ python main.py
 
 - `--local-only` — run entirely on Ollama (no Groq calls)
 - `--depth auto|short|medium|long|comprehensive` — control article length
-- `--publish` — publish directly to Medium (requires `MEDIUM_TOKEN`)
 
 ## Requirements
 

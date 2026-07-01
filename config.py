@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     agent_cloud_chapter_architect: bool = True
     agent_cloud_chapter_editor: bool = True
 
-    medium_token: str = ""
+
 
     cache_dir: str = ".cache"
     cache_ttl: int = 3600
